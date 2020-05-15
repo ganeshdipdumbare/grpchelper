@@ -70,3 +70,9 @@ func (s *Server) AwaitTermination() {
 	s.GrpcServer.GracefulStop()
 	s.Listner.Close()
 }
+
+type RegisterFunc func(*grpc.Server, interface{})
+
+func (s *Server) Register(r RegisterFunc, service interface{}) {
+	r(s.GrpcServer, s)
+}
