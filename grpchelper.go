@@ -71,8 +71,8 @@ func (s *Server) AwaitTermination() {
 	s.Listner.Close()
 }
 
-type RegisterFunc func(*grpc.Server, interface{})
+type RegisterFunc func(*grpc.Server)
 
-func (s *Server) Register(r RegisterFunc, service interface{}) {
-	r(s.GrpcServer, s)
+func (s *Server) Register(r RegisterFunc) {
+	r(s.GrpcServer)
 }
