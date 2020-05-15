@@ -14,7 +14,7 @@ import (
 // Server holds grpc server and tcp listner
 type Server struct {
 	GrpcServer *grpc.Server
-	Listner    *net.Listener
+	Listner    net.Listener
 }
 
 // NewServer creates grpc server with given configuration and tcp listner for given address
@@ -28,7 +28,7 @@ func NewServer(addr string, ui []grpc.UnaryServerInterceptor, si []grpc.StreamSe
 
 	return &Server{
 		GrpcServer: grpcServer,
-		Listner:    &listner,
+		Listner:    listner,
 	}, nil
 }
 
@@ -51,7 +51,7 @@ func setupServer(ui []grpc.UnaryServerInterceptor, si []grpc.StreamServerInterce
 
 // Serve starts TCP server and will keep running
 func (s *Server) Serve() error {
-	err := s.GrpcServer.Serve(*s.Listner)
+	err := s.GrpcServer.Serve(s.Listner)
 	if err != nil {
 		return err
 	}
@@ -68,5 +68,5 @@ func (s *Server) AwaitTermination() {
 	<-stop
 
 	s.GrpcServer.GracefulStop()
-	(*s.Listner).Close()
+	s.Listner.Close()
 }
