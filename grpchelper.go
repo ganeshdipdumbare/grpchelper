@@ -70,9 +70,3 @@ func (s *Server) AwaitTermination() {
 	s.GrpcServer.GracefulStop()
 	s.Listner.Close()
 }
-
-type RegisterFunc func(*grpc.Server)
-
-func (s *Server) Register(r RegisterFunc) {
-	r(s.GrpcServer)
-}
